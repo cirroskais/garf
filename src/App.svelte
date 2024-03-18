@@ -1,20 +1,20 @@
 <script lang="ts">
-    import { authorize } from "./lib/discord";
-    import { logs } from "./lib/stores";
+    import { authorize } from "./lib/discord.js";
+    import { user } from "./lib/stores.js";
 
     async function main() {
         const auth = await authorize();
-        $logs = [...$logs, { type: "Auth", content: JSON.stringify(auth.user) }];
+        user.set(auth.user);
     }
 
     main();
 </script>
 
 <main>
-    <p>garf 2: eletric boogaloo</p>
-    {#each $logs as log}
-        <p><strong>{log.type}</strong></p>
-        <tt>{log.content}</tt>
-        <br />
-    {/each}
+    {#if $user.avatar}
+        <img src={`https://cdn.discordapp.com/avatars/${$user.id}/${$user.avatar}.png?size=256`} alt="" />
+    {:else}
+        <img src={`https://cdn.discordapp.com/embed/avatars/${Math.abs(Number($user.id) >> 22) % 6}.png`} alt="" />
+    {/if}
+    <p>Hello, <strong>{$user.username}</strong></p>
 </main>
