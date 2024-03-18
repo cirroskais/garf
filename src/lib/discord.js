@@ -31,7 +31,9 @@ async function activityUpdateLoop() {
         assets: {
             large_image: "embedded_cover",
         },
-        party: [participants.length, 5],
+        party: {
+            size: [participants.length, 5],
+        },
     });
 }
 
