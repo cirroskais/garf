@@ -4,6 +4,8 @@ import { DiscordSDK } from "@discord/embedded-app-sdk";
 const discordSdk = new DiscordSDK(CLIENT_ID);
 
 export async function authorize() {
+    await discordSdk.ready();
+
     const { code } = await discordSdk.commands.authorize({
         client_id: CLIENT_ID,
         response_type: "code",
