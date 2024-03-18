@@ -1,12 +1,12 @@
 <script lang="ts">
     import { authorize, discordSdk } from "./lib/discord";
 
-    let output = "";
+    let logs = [{ type: "Init", content: "Begin logs" }];
 
     async function main() {
         const auth = await authorize().catch((e) => e);
-        output = output + `auth: ${JSON.stringify(auth)}\n`;
-        if (!auth) return (output += `failed to authenticate :'c`);
+        if (!auth) return logs.push({ type: "Auth", content: `Failure | ${JSON.stringify(auth)}` });
+        logs.push({ type: "Auth", content: JSON.stringify(auth) });
 
         const response = await discordSdk.commands.setActivity({
             activity: {
@@ -19,7 +19,7 @@
             },
         });
 
-        output = output + `response: ${JSON.stringify(response)}\n`;
+        logs.push({ type: "Activity", content: JSON.stringify(response) });
     }
 
     main();
@@ -27,7 +27,9 @@
 
 <main>
     <p>garf 2: eletric boogaloo</p>
-    {#key output}
-        <tt>{output}</tt>
-    {/key}
+    {#each logs as log}
+        <h1>{log.type}</h1>
+        <tt>{log.content}</tt>
+        <br />
+    {/each}
 </main>
