@@ -1,10 +1,7 @@
 const CLIENT_ID = "869016244613951539";
 
 import { DiscordSDK } from "@discord/embedded-app-sdk";
-import { writable } from "svelte/store";
 const discordSdk = new DiscordSDK(CLIENT_ID);
-
-export let information = writable();
 
 export async function authorize() {
     const { code } = await discordSdk.commands.authorize({
@@ -28,7 +25,6 @@ export async function authorize() {
     const { access_token } = await response.json();
 
     const auth = await discordSdk.commands.authenticate({ access_token });
-    information.set(auth);
 
     return auth;
 }

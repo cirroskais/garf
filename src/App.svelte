@@ -1,12 +1,15 @@
 <script lang="ts">
     import { authorize, setActivity } from "./lib/discord";
 
-    let output = {};
+    let output = "";
 
-    authorize().then(async (auth) => {
-        // we now have our authenticated context.
-        output = await setActivity();
-    });
+    async function main() {
+        const result = await authorize();
+
+        output += `result: ${JSON.stringify(result)}\n`;
+    }
+
+    main();
 </script>
 
 <main>
