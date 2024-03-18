@@ -1,4 +1,3 @@
-import type { Types } from "@discord/embedded-app-sdk";
 import { writable, type Writable } from "svelte/store";
 
 interface AuthenticatedUser {
@@ -11,4 +10,3 @@ interface AuthenticatedUser {
 }
 
 export const user: Writable<AuthenticatedUser> = writable();
-export const participants: Writable<Types.GetActivityInstanceConnectedParticipantsResponse> = writable();

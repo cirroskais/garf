@@ -1,7 +1,5 @@
-const CLIENT_ID = "869016244613951539";
-import { DiscordSDK, Events, type Types } from "@discord/embedded-app-sdk";
-export const discordSdk = new DiscordSDK(CLIENT_ID);
-import { participants as partz } from "./stores";
+import { DiscordSDK } from "@discord/embedded-app-sdk";
+export const discordSdk = new DiscordSDK(import.meta.env.VITE_DISCORD_CLIENT_ID);
 
 export const ACTIVITY_STARTED = Date.now();
 
@@ -9,7 +7,7 @@ export async function authorize() {
     await discordSdk.ready();
 
     const { code } = await discordSdk.commands.authorize({
-        client_id: CLIENT_ID,
+        client_id: import.meta.env.VITE_DISCORD_CLIENT_ID,
         response_type: "code",
         state: "",
         prompt: "none",
@@ -25,27 +23,5 @@ export async function authorize() {
     const { access_token } = await response.json();
     const auth = await discordSdk.commands.authenticate({ access_token });
 
-    await discordSdk.commands.getInstanceConnectedParticipants();
-
     return auth;
 }
-
-discordSdk.subscribe(Events.ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE, async (data) => {
-    partz.set(data);
-
-    await discordSdk.commands.setActivity({
-        activity: {
-            type: 3,
-            details: "garf",
-            state: "garfmaxxing",
-            assets: {
-                large_image: "embedded_cover",
-                large_text: "garf",
-            },
-            party: {
-                id: discordSdk.instanceId,
-                size: [data.participants.length, 5],
-            },
-        },
-    });
-});
