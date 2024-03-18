@@ -1,14 +1,36 @@
 const CLIENT_ID = "869016244613951539";
-
 import { DiscordSDK } from "@discord/embedded-app-sdk";
 export const discordSdk = new DiscordSDK(CLIENT_ID);
 
 import { logs } from "./stores";
 
+export const ACTIVITY_STARTED = Date.now();
+
+/**
+ * @param {import('@discord/embedded-app-sdk').Types.Activity} activity
+ */
+async function setActivity(activity) {
+    const result = await discordSdk.commands.setActivity({ activity });
+    logs.update((value) => {
+        return [...value, { type: "Activity", content: JSON.stringify(result) }];
+    });
+
+    return result;
+}
+
 async function updateActivity() {
     const peers = await discordSdk.commands.getInstanceConnectedParticipants();
     logs.update((value) => {
         return [...value, { type: "Peers", content: JSON.stringify(peers) }];
+    });
+
+    setActivity({
+        type: 3,
+        name: "garf",
+        details: "garfing rn",
+        assets: {
+            large_image: "embedded_cover",
+        },
     });
 }
 
@@ -35,16 +57,4 @@ export async function authorize() {
     setInterval(updateActivity, 10 * 1000);
 
     return auth;
-}
-
-/**
- * @param {any} activity
- */
-export async function setActivity(activity) {
-    const result = await discordSdk.commands.setActivity({ activity });
-    logs.update((value) => {
-        return [...value, { type: "Activity", content: JSON.stringify(result) }];
-    });
-
-    return result;
 }

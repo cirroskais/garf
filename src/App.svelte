@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { authorize, setActivity } from "./lib/discord";
+    import { authorize } from "./lib/discord";
     import { logs } from "./lib/stores";
 
     async function main() {
