@@ -7,7 +7,7 @@ import { logs } from "./stores";
 export const ACTIVITY_STARTED = Date.now();
 
 /**
- * @param {import('@discord/embedded-app-sdk').Types.Activity} activity
+ * @param {any} activity
  */
 async function setActivity(activity) {
     const result = await discordSdk.commands.setActivity({ activity });
@@ -18,19 +18,20 @@ async function setActivity(activity) {
     return result;
 }
 
-async function updateActivity() {
-    const peers = await discordSdk.commands.getInstanceConnectedParticipants();
+async function activityUpdateLoop() {
+    const { participants } = await discordSdk.commands.getInstanceConnectedParticipants();
     logs.update((value) => {
-        return [...value, { type: "Peers", content: JSON.stringify(peers) }];
+        return [...value, { type: "Peers", content: JSON.stringify(participants) }];
     });
 
     setActivity({
         type: 3,
-        name: "garf",
-        details: "garfing rn",
+        details: "garf",
+        state: "garfing rn",
         assets: {
             large_image: "embedded_cover",
         },
+        party: [participants.length, 5],
     });
 }
 
@@ -54,7 +55,7 @@ export async function authorize() {
     const { access_token } = await response.json();
     const auth = await discordSdk.commands.authenticate({ access_token });
 
-    setInterval(updateActivity, 10 * 1000);
+    setInterval(activityUpdateLoop, 10 * 1000);
 
     return auth;
 }
