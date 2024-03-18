@@ -5,8 +5,8 @@
 
     async function main() {
         const auth = await authorize().catch((e) => e);
-        if (!auth) return logs.push({ type: "Auth", content: `Failure | ${JSON.stringify(auth)}` });
-        logs.push({ type: "Auth", content: JSON.stringify(auth) });
+        if (!auth) return (logs = [...logs, { type: "Auth", content: `Failure | ${JSON.stringify(auth)}` }]);
+        logs = [...logs, { type: "Auth", content: JSON.stringify(auth) }];
 
         const response = await discordSdk.commands.setActivity({
             activity: {
@@ -19,7 +19,7 @@
             },
         });
 
-        logs.push({ type: "Activity", content: JSON.stringify(response) });
+        logs = [...logs, { type: "Activity", content: JSON.stringify(response) }];
     }
 
     main();
