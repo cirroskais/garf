@@ -1,7 +1,7 @@
 const CLIENT_ID = "869016244613951539";
 
 import { DiscordSDK } from "@discord/embedded-app-sdk";
-const discordSdk = new DiscordSDK(CLIENT_ID);
+export const discordSdk = new DiscordSDK(CLIENT_ID);
 
 export async function authorize() {
     await discordSdk.ready();
@@ -29,14 +29,4 @@ export async function authorize() {
     const auth = await discordSdk.commands.authenticate({ access_token });
 
     return auth;
-}
-
-export async function setActivity() {
-    return await discordSdk.commands.setActivity({
-        activity: {
-            type: 0,
-            details: "garf",
-            state: "Playing",
-        },
-    });
 }

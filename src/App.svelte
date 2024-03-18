@@ -1,15 +1,22 @@
 <script lang="ts">
-    import { authorize, setActivity } from "./lib/discord";
+    import { authorize, discordSdk } from "./lib/discord";
 
     let output = "";
 
     async function main() {
         const auth = await authorize();
-        output += `auth: ${JSON.stringify(auth)}\n`;
+        output = output + `auth: ${JSON.stringify(auth)}\n`;
         if (!auth) return (output += `failed to authenticate :'c`);
 
-        const activity = await setActivity();
-        output += `activity: ${JSON.stringify(activity)}\n`;
+        const activity = await discordSdk.commands.setActivity({
+            activity: {
+                type: 0,
+                details: "garf",
+                state: "Playing",
+            },
+        });
+
+        output = output + `activity: ${JSON.stringify(activity)}\n`;
     }
 
     main();
@@ -17,5 +24,7 @@
 
 <main>
     <p>garf 2: eletric boogaloo</p>
-    <tt>{output}</tt>
+    {#key output}
+        <tt>{output}</tt>
+    {/key}
 </main>
