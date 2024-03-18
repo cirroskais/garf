@@ -25,13 +25,15 @@ export async function authorize() {
     const { access_token } = await response.json();
     const auth = await discordSdk.commands.authenticate({ access_token });
 
+    await discordSdk.commands.getInstanceConnectedParticipants();
+
     return auth;
 }
 
-discordSdk.subscribe(Events.ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE, (data) => {
+discordSdk.subscribe(Events.ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE, async (data) => {
     partz.set(data);
 
-    discordSdk.commands.setActivity({
+    await discordSdk.commands.setActivity({
         activity: {
             type: 3,
             details: "garf",
@@ -41,6 +43,7 @@ discordSdk.subscribe(Events.ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE, (data) => {
                 large_text: "garf",
             },
             party: {
+                id: discordSdk.instanceId,
                 size: [data.participants.length, 5],
             },
         },
