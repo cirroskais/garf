@@ -4,9 +4,12 @@
     let output = "";
 
     async function main() {
-        const result = await authorize();
+        const auth = await authorize();
+        output += `auth: ${JSON.stringify(auth)}\n`;
+        if (!auth) return (output += `failed to authenticate :'c`);
 
-        output += `result: ${JSON.stringify(result)}\n`;
+        const activity = await setActivity();
+        output += `activity: ${JSON.stringify(activity)}\n`;
     }
 
     main();
@@ -14,5 +17,5 @@
 
 <main>
     <p>garf 2: eletric boogaloo</p>
-    <tt>{JSON.stringify(output, null, 4)}</tt>
+    <tt>{output}</tt>
 </main>
