@@ -4,7 +4,7 @@
     let output = "";
 
     async function main() {
-        const auth = await authorize();
+        const auth = await authorize().catch((e) => e);
         output = output + `auth: ${JSON.stringify(auth)}\n`;
         if (!auth) return (output += `failed to authenticate :'c`);
 

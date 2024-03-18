@@ -11,7 +11,27 @@ export async function authorize() {
         response_type: "code",
         state: "",
         prompt: "none",
-        scope: ["identify", "rpc.activities.write"],
+        scope: [
+            // "applications.builds.upload",
+            // "applications.builds.read",
+            // "applications.store.update",
+            // "applications.entitlements",
+            // "bot",
+            "identify",
+            // "connections",
+            // "email",
+            // "gdm.join",
+            "guilds",
+            // "guilds.join",
+            // "guilds.members.read",
+            // "messages.read",
+            // "relationships.read",
+            "rpc.activities.write",
+            // "rpc.notifications.read",
+            // "rpc.voice.write",
+            "rpc.voice.read",
+            // "webhook.incoming",
+        ],
     });
 
     const response = await fetch("/api/token", {
