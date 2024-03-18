@@ -1,13 +1,17 @@
 import { DiscordSDK } from "@discord/embedded-app-sdk";
-export const discordSdk = new DiscordSDK(import.meta.env.VITE_DISCORD_CLIENT_ID);
+import type { Configuration } from "./api";
+import { user } from "./stores";
 
 export const ACTIVITY_STARTED = Date.now();
+export let discordSdk: DiscordSDK | null = null;
 
-export async function authorize() {
+export async function authorize(config: Configuration) {
+    discordSdk = new DiscordSDK(config.DISCORD_CLIENT_ID);
+
     await discordSdk.ready();
 
     const { code } = await discordSdk.commands.authorize({
-        client_id: import.meta.env.VITE_DISCORD_CLIENT_ID,
+        client_id: config.DISCORD_CLIENT_ID,
         response_type: "code",
         state: "",
         prompt: "none",
@@ -22,6 +26,8 @@ export async function authorize() {
 
     const { access_token } = await response.json();
     const auth = await discordSdk.commands.authenticate({ access_token });
+
+    user.set(auth.user);
 
     return auth;
 }
