@@ -4,18 +4,16 @@
     let logs = [{ type: "Init", content: "Begin logs" }];
 
     async function main() {
-        const auth = await authorize().catch((e) => e);
-        if (!auth) return (logs = [...logs, { type: "Auth", content: `Failure | ${JSON.stringify(auth)}` }]);
-        logs = [...logs, { type: "Auth", content: JSON.stringify(auth.user) }];
+        const auth = await authorize();
+        logs = [...logs, { type: "Auth", content: JSON.stringify(auth.user, null, 4) }];
 
-        const response = await discordSdk.commands.setActivity({
+        const activity = await discordSdk.commands.setActivity({
             activity: {
                 type: 3,
                 details: "garf",
                 state: "garfing rn",
                 timestamps: {
                     start: Date.now(),
-                    end: 0,
                 },
                 party: {
                     size: [4, 5],
@@ -29,7 +27,7 @@
             },
         });
 
-        logs = [...logs, { type: "Activity", content: JSON.stringify(response) }];
+        logs = [...logs, { type: "Activity", content: JSON.stringify(activity, null, 4) }];
     }
 
     main();
@@ -38,7 +36,7 @@
 <main>
     <p>garf 2: eletric boogaloo</p>
     {#each logs as log}
-        <h6>{log.type}</h6>
+        <p><strong>{log.type}</strong></p>
         <tt>{log.content}</tt>
         <br />
     {/each}
