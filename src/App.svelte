@@ -8,8 +8,15 @@
         output = output + `auth: ${JSON.stringify(auth)}\n`;
         if (!auth) return (output += `failed to authenticate :'c`);
 
-        const response = await discordSdk.commands.openExternalLink({
-            url: "https://garf.madhouselabs.net",
+        const response = await discordSdk.commands.setActivity({
+            activity: {
+                type: 3,
+                details: "garf",
+                state: "Garf",
+                timestamps: {
+                    start: Date.now(),
+                },
+            },
         });
 
         output = output + `response: ${JSON.stringify(response)}\n`;
