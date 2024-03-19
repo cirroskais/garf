@@ -1,6 +1,6 @@
 import { DiscordSDK } from "@discord/embedded-app-sdk";
 import type { Configuration } from "./api";
-import { user } from "./stores";
+import { identity as identityStore, user } from "./stores";
 
 export const ACTIVITY_STARTED = Date.now();
 export let discordSdk: DiscordSDK | null = null;
@@ -24,10 +24,11 @@ export async function authorize(config: Configuration) {
         body: JSON.stringify({ code }),
     });
 
-    const { access_token } = await response.json();
+    const { access_token, identity } = await response.json();
     const auth = await discordSdk.commands.authenticate({ access_token });
 
     user.set(auth.user);
+    identityStore.set(identity);
 
     return auth;
 }

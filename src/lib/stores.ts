@@ -9,4 +9,10 @@ interface AuthenticatedUser {
     global_name?: string | null | undefined;
 }
 
+interface Identity {
+    id: string;
+    iv: string;
+}
+
 export const user: Writable<AuthenticatedUser> = writable();
+export const identity: Writable<Identity> = writable();
