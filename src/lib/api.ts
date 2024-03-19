@@ -13,6 +13,7 @@ export async function fetchConfiguration() {
 }
 
 export async function connect() {
+    console.log(get(identity));
     const searchParams = new URLSearchParams();
     searchParams.set("id", get(identity).id);
     searchParams.set("iv", get(identity).iv);
