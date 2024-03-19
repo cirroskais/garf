@@ -27,6 +27,8 @@ export async function authorize(config: Configuration) {
     const { access_token, identity } = await response.json();
     const auth = await discordSdk.commands.authenticate({ access_token });
 
+    console.log(identity);
+
     user.set(auth.user);
     identityStore.set(identity);
 
