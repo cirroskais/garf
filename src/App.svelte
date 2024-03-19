@@ -1,6 +1,6 @@
 <script lang="ts">
     import { authorize } from "./lib/discord.js";
-    import { fetchConfiguration } from "./lib/api";
+    import { fetchConfiguration, connect } from "./lib/api";
     import { user } from "./lib/stores.js";
 
     import UserCardShort from "./lib/components/UserCardShort.svelte";
@@ -15,7 +15,7 @@
         });
     }
 
-    fetchConfiguration().then((config) => authorize(config));
+    fetchConfiguration().then((config) => authorize(config).then(() => connect()));
 </script>
 
 {#if $user}
